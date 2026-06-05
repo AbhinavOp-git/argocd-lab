@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: multisource-nginx
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: https://charts.bitnami.com/bitnami
+      chart: nginx
+      targetRevision: 18.x.x
+      helm:
+        valueFiles:
+          - $values/multisource-app/values-override.yaml
+    - repoURL: https://github.com/AbhinavOp-git/argocd-lab
+      targetRevision: HEAD
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
