@@ -1,0 +1,14 @@
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: app1-image-updater
+  namespace: argocd
+spec:
+  applicationRefs:
+    - namePattern: app1
+      images:
+        - alias: nginx
+          imageName: docker.io/library/nginx:1.25
+          commonUpdateSettings:
+            updateStrategy: semver
+            allowTags: "1\\.25\\..*"
