@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: platform
+  namespace: argocd
+spec:
+  description: Platform team project
+
+  # only allow deployments from this repo
+  sourceRepos:
+    - 'https://github.com/AbhinavOp-git/argocd-lab'
+
+  # only allow deploying to these namespaces on this cluster
+  destinations:
+    - namespace: 'dev'
+      server: 'https://kubernetes.default.svc'
+    - namespace: 'staging'
+      server: 'https://kubernetes.default.svc'
+    - namespace: 'prod'
+      server: 'https://kubernetes.default.svc'
+
+  # what cluster-level resources this project can create
+  clusterResourceWhitelist:
+    - group: ''
+      kind: 'Namespace'
+
+  # what namespace-level resources this project can create
+  namespaceResourceWhitelist:
+    - group: 'apps'
+      kind: 'Deployment'
+    - group: ''
+      kind: 'Service'
+    - group: ''
+      kind: 'ConfigMap'
+    - group: ''
+      kind: 'Secret'
